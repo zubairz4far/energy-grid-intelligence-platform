@@ -1,0 +1,145 @@
+{
+  "release": "v0.1",
+  "dataset": {
+    "name": "Open Power System Data time series",
+    "version": "2020-10-06",
+    "doi": "10.25832/time_series/2020-10-06",
+    "package_url": "https://data.open-power-system-data.org/time_series/2020-10-06",
+    "primary_source": "ENTSO-E Transparency via OPSD",
+    "region": "DE-LU bidding zone",
+    "usable_actual_and_forecast_rows": 16636,
+    "date_min": "2018-10-01T00:00:00+00:00",
+    "date_max": "2020-09-30T23:00:00+00:00",
+    "actual_column": "DE_LU_load_actual_entsoe_transparency",
+    "forecast_column": "DE_LU_load_forecast_entsoe_transparency",
+    "file_sha256": "6a7f2bc571314cbf9c321cc03437691cd4be95c3a6f075e60ff99e8035c704c8"
+  },
+  "protocol": {
+    "forecast_horizon": "published day-ahead baseline; correction features use lags >=24h",
+    "development_days": 60,
+    "test_days": 60,
+    "seed": 42
+  },
+  "forecasting": {
+    "split": {
+      "train_rows": 11433,
+      "dev_rows": 1440,
+      "test_rows": 1440,
+      "dev_start": "2020-06-03T00:00:00+00:00",
+      "test_start": "2020-08-02T00:00:00+00:00",
+      "test_end": "2020-09-30T23:00:00+00:00"
+    },
+    "selection": {
+      "candidate": "residual_hgb_small",
+      "dev_metrics": {
+        "entsoe_day_ahead": {
+          "mae_mw": 883.5527777777778,
+          "rmse_mw": 1141.529110934588,
+          "wape": 0.017371288399819853,
+          "bias_mw": 76.15138888888889,
+          "p95_abs_error_mw": 2390.299999999999,
+          "underforecast_mwh": 581329.0
+        },
+        "residual_hgb_small": {
+          "mae_mw": 857.3660720773986,
+          "rmse_mw": 1082.6151856004838,
+          "wape": 0.016856438774077512,
+          "bias_mw": 186.22333086217506,
+          "p95_abs_error_mw": 2199.358516977845,
+          "underforecast_mwh": 483222.77367496095
+        },
+        "residual_hgb_medium": {
+          "mae_mw": 877.7897888604554,
+          "rmse_mw": 1104.2532166835306,
+          "wape": 0.017257983858149393,
+          "bias_mw": 218.88628430946136,
+          "p95_abs_error_mw": 2250.1196445398914,
+          "underforecast_mwh": 474410.52327671566
+        }
+      }
+    },
+    "test_metrics": {
+      "entsoe_day_ahead": {
+        "mae_mw": 1127.0020833333333,
+        "rmse_mw": 1386.2344175559438,
+        "wape": 0.021586558290163867,
+        "bias_mw": -679.9826388888889,
+        "p95_abs_error_mw": 2650.0,
+        "underforecast_mwh": 1301029.0
+      },
+      "residual_hgb_small": {
+        "mae_mw": 1044.3775947360218,
+        "rmse_mw": 1328.1727981244003,
+        "wape": 0.020003971739812908,
+        "bias_mw": 232.77590171911757,
+        "p95_abs_error_mw": 2616.7165434622325,
+        "underforecast_mwh": 584353.2189721711
+      }
+    },
+    "promotion": {
+      "decision": "PROMOTE",
+      "rule": "candidate MAE <= 99.5% of ENTSO-E day-ahead MAE and candidate p95 absolute error <= ENTSO-E"
+    }
+  },
+  "uncertainty_90": {
+    "entsoe_day_ahead": {
+      "target_coverage": 0.9,
+      "calibrated_half_width_mw": 1877.4000000000005,
+      "test_coverage": 0.8173611111111111,
+      "mean_interval_width_mw": 3754.800000000001
+    },
+    "candidate": {
+      "target_coverage": 0.9,
+      "calibrated_half_width_mw": 1791.5488844363797,
+      "test_coverage": 0.8236111111111111,
+      "mean_interval_width_mw": 3583.0977688727594
+    }
+  },
+  "reserve_risk_95": {
+    "entsoe_day_ahead": {
+      "calibration_quantile": 0.95,
+      "upward_buffer_mw": 1689.1,
+      "downward_buffer_mw": 2034.05,
+      "upward_exceedance_rate": 0.20972222222222223,
+      "downward_exceedance_rate": 0.020833333333333332
+    },
+    "candidate": {
+      "calibration_quantile": 0.95,
+      "upward_buffer_mw": 1650.1958681740568,
+      "downward_buffer_mw": 1990.6550397251324,
+      "upward_exceedance_rate": 0.0763888888888889,
+      "downward_exceedance_rate": 0.08402777777777778
+    }
+  },
+  "ramp_events": {
+    "entsoe_day_ahead": {
+      "ramp_threshold_mw_per_hour": 4990.949999999988,
+      "true_positives": 58,
+      "false_positives": 18,
+      "false_negatives": 2,
+      "precision": 0.7631578947368421,
+      "recall": 0.9666666666666667,
+      "f1": 0.8529411764705883
+    },
+    "candidate": {
+      "ramp_threshold_mw_per_hour": 4990.949999999988,
+      "true_positives": 54,
+      "false_positives": 12,
+      "false_negatives": 6,
+      "precision": 0.8181818181818182,
+      "recall": 0.9,
+      "f1": 0.8571428571428572
+    }
+  },
+  "release_gate": {
+    "decision": "PASS",
+    "model_promotion": "PROMOTE",
+    "rule": "benchmark passes when the source is reproducible and all forecasting, uncertainty, reserve-risk, and ramp metrics are emitted; model promotion is evaluated separately"
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "scikit_learn": "1.9.0"
+  }
+}
