@@ -20,7 +20,7 @@ TIMESTAMP = "utc_timestamp"
 ACTUAL = "DE_LU_load_actual_entsoe_transparency"
 TSO_FORECAST = "DE_LU_load_forecast_entsoe_transparency"
 OPTIONAL_COLUMNS = ["DE_LU_wind_generation_actual", "DE_LU_solar_generation_actual"]
-EXPECTED_SHA256: str | None = None
+EXPECTED_SHA256 = "6a7f2bc571314cbf9c321cc03437691cd4be95c3a6f075e60ff99e8035c704c8"
 
 
 @dataclass(frozen=True)
@@ -55,10 +55,9 @@ def ensure_data_file(data_dir: str | Path, *, download: bool = False) -> Path:
                 f"Missing {DATA_FILENAME}. Re-run with --download or place the OPSD file in {root}."
             )
         _download(DATA_URL, path)
-    if EXPECTED_SHA256 is not None:
-        digest = sha256_file(path)
-        if digest != EXPECTED_SHA256:
-            raise ValueError(f"Unexpected OPSD SHA256: {digest}")
+    digest = sha256_file(path)
+    if digest != EXPECTED_SHA256:
+        raise ValueError(f"Unexpected OPSD SHA256: {digest}")
     return path
 
 
