@@ -46,6 +46,8 @@ jobs:
             --data-dir .cache/opsd \
             --output /tmp/v0.1_opsd_de_lu.json \
             | tee /tmp/v0.1_opsd_de_lu.log
+      - name: Verify frozen v0.1 evidence
+        run: diff -u evals/results/v0.1_opsd_de_lu.json /tmp/v0.1_opsd_de_lu.json
       - uses: actions/upload-artifact@v4
         with:
           name: v0.1-grid-evidence
