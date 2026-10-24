@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   pull_request:
+  schedule:
+    - cron: '17 3 * * 1'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -24,6 +27,8 @@ jobs:
       - run: pytest -q
 
   opsd-benchmark:
+    # Large external-source downloads are isolated from deterministic PR quality gates.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -41,6 +46,7 @@ jobs:
       - run: pip install -e . --no-deps
       - name: Run OPSD DE-LU v0.1 benchmark
         run: |
+          set -euo pipefail
           grid-intelligence benchmark \
             --download \
             --data-dir .cache/opsd \
