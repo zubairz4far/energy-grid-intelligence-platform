@@ -124,3 +124,7 @@ This is offline benchmark evidence, not live grid deployment. It does not claim 
 ## License
 
 Repository code: MIT. Raw OPSD/ENTSO-E data is not redistributed; upstream source terms and attribution apply.
+
+## CI verification cadence
+
+Pull requests always run deterministic unit tests and lint. The full OPSD held-out benchmark needs an external **124 MB** source download; it runs on a weekly schedule and via `workflow_dispatch` rather than failing unrelated PR checks when the upstream host times out. The benchmark still checks the source SHA-256 and performs an exact frozen-metric comparison (allowing only Python patch-level runner updates). Its shell uses `pipefail`, so download and evaluation failures cannot be masked by `tee`. A green PR quality check is **not** a claim that the weekly download benchmark passed.
